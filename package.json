@@ -1,0 +1,14 @@
+{
+  "name": "amazon-rank-checker-v2",
+  "version": "1.0.0",
+  "description": "Check Amazon keyword ranking using Puppeteer",
+  "main": "index.js",
+   "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "puppeteer": "^24.16.0",
+	"dotenv": "^17.2.1"
+  }
+}
