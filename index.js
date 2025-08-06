@@ -14,7 +14,7 @@ if (fs.existsSync(LOCK_FILE)) {
   process.exit(0);
 }
 
-const KEYWORDS = const KEYWORDS = [
+const KEYWORDS = [
   { "keyword": "car bumper stickers and decals", "asin": "B0C99SLC1J" },
   { "keyword": "raccoon sticker", "asin": "B0C99SLC1J" },
   { "keyword": "bumper sticker car", "asin": "B0C99SLC1J" },
