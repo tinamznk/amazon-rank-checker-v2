@@ -5,9 +5,16 @@ import { getCookieForBatch } from './utils/cookieManager.js';
 import { sleep } from './utils/sleep.js';
 
 const BATCH_SIZE = 5;
-const COOKIE_ROTATE_EVERY = 40; // đổi cookie sau mỗi 40 batch (~200 keyword)
+const COOKIE_ROTATE_EVERY = 40;
+const LOCK_FILE = 'done.lock';
 
-const KEYWORDS = [
+// ✅ Nếu đã chạy xong trước đó thì thoát luôn
+if (fs.existsSync(LOCK_FILE)) {
+  console.log("✅ Script đã chạy trước đó. Dừng.");
+  process.exit(0);
+}
+
+const KEYWORDS = const KEYWORDS = [
   { "keyword": "car bumper stickers and decals", "asin": "B0C99SLC1J" },
   { "keyword": "raccoon sticker", "asin": "B0C99SLC1J" },
   { "keyword": "bumper sticker car", "asin": "B0C99SLC1J" },
@@ -15,7 +22,6 @@ const KEYWORDS = [
   { "keyword": "car stickers funny", "asin": "B0C99SLC1J" },
   { "keyword": "bigfoot vinyl decal", "asin": "B0C99SLC1J" }
 ];
-
 async function checkKeywordRank(page, keyword, asin) {
   const url = `https://www.amazon.com/s?k=${encodeURIComponent(keyword)}`;
   try {
@@ -25,7 +31,6 @@ async function checkKeywordRank(page, keyword, asin) {
     await page.setExtraHTTPHeaders({ 'accept-language': 'en-US,en;q=0.9' });
 
     await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
-
     await sleep(1500);
 
     const products = await page.$$eval('div[data-component-type="s-search-result"]', nodes =>
@@ -59,11 +64,10 @@ async function run() {
       '--disable-dev-shm-usage',
       '--disable-blink-features=AutomationControlled',
       '--disable-gpu',
-      '--single-process',
+      '--single-process'
     ],
   });
 
-  let batchCount = 0;
   const totalBatches = Math.ceil(KEYWORDS.length / BATCH_SIZE);
 
   for (let i = 0; i < totalBatches; i++) {
@@ -72,7 +76,7 @@ async function run() {
 
     console.log(`\n🔄 Batch ${i + 1}/${totalBatches} — using ${cookie.name}`);
 
-    const results = await Promise.allSettled(
+    await Promise.allSettled(
       batchKeywords.map(async ({ keyword, asin }) => {
         const page = await browser.newPage();
         await page.setCookie(...cookie.cookies);
@@ -83,11 +87,14 @@ async function run() {
       })
     );
 
-    await sleep(2000); // delay giữa các batch
+    await sleep(2000);
   }
 
   await browser.close();
-  console.log("\n✅ DONE: All keywords processed.");
+
+  // ✅ Ghi file lock xác nhận hoàn tất
+  fs.writeFileSync(LOCK_FILE, `✅ Done at ${new Date().toISOString()}\n`);
+  console.log("✅ DONE. Lock file written. Exiting...");
   process.exit(0);
 }
 
