@@ -16,8 +16,8 @@ if (fs.existsSync(LOCK_FILE)) {
 
 const KEYWORDS = [
   { "keyword": "car bumper stickers and decals", "asin": "B0C99SLC1J" },
-  { "keyword": "bigfoot vinyl decalraccoon sticker", "asin": "B0C99SLC1J" },
-  { "keyword": "bumper sticker car", "asin": "B0C99SLC1J" },
+  { "keyword": "bigfoot vinyl decal", "asin": "B0C99SLC1J" },
+  { "keyword": "xxxxx", "asin": "B0C99SLC1J" },
   { "keyword": "best bumper stickers", "asin": "B0C99SLC1J" },
   { "keyword": "car stickers funny", "asin": "B0C99SLC1J" },
   { "keyword": "raccoon sticker", "asin": "B0C99SLC1J" }
