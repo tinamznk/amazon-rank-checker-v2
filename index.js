@@ -6,7 +6,7 @@ import { sleep } from './utils/sleep.js';
 
 const BATCH_SIZE = 5;
 const COOKIE_ROTATE_EVERY = 40;
-const LOCK_FILE = 'done.lock';
+const LOCK_FILE = '/data/done.lock';
 
 // ✅ Nếu đã chạy xong trước đó thì thoát luôn
 if (fs.existsSync(LOCK_FILE)) {
