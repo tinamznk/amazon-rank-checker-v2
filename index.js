@@ -52,7 +52,6 @@ async function run() {
 
   const browser = await puppeteer.launch({
     headless: 'new',
-    executablePath: '/usr/bin/chromium',
     userDataDir: '/tmp/puppeteer-profile',
     args: [
       '--no-sandbox',
